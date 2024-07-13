@@ -1,0 +1,39 @@
+<html>
+
+<head>
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <script type="text/javascript">
+    google.charts.load('current', { 'packages': ['corechart'] });
+    google.charts.setOnLoadCallback(drawChart);
+    var input_data = {{ data | safe}};
+    function drawChart() {
+      var data = google.visualization.arrayToDataTable(input_data);
+
+      var options = {
+        title: 'Car traffic in {{locName}} {{direction}}',
+        curveType: 'function',
+        legend: { position: 'bottom' }
+      };
+      var chart = new google.visualization.ColumnChart(document.getElementById('curve_chart'));
+      chart.draw(data, options);
+    }
+  </script>
+</head>
+
+<body>
+  <table>
+    <tr>
+      <th>
+        <div id="curve_chart" style="width: 700px; height: 500px"></div>
+      </th>
+      <th>
+        <video width="500" controls>
+          <source src="{{ camURL }}" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      </th>
+    </tr>
+  </table>
+</body>
+
+</html>

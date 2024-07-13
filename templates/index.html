@@ -1,37 +1,44 @@
-<html>
-
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-  <script type="text/javascript">
-    google.charts.load('current', { 'packages': ['corechart'] });
-    google.charts.setOnLoadCallback(drawChart);
-    var input_data = {{ data | safe}};
-    function drawChart() {
-      var data = google.visualization.arrayToDataTable(input_data);
-
-      var options = {
-        title: 'Car traffic in Ganna',
-        curveType: 'function',
-        legend: { position: 'bottom' }
-      };
-      var chart = new google.visualization.ColumnChart(document.getElementById('curve_chart'));
-      //var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
-      chart.draw(data, options);
-    }
-  </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Map</title>
+    <!-- Include Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <style>
+        #map {
+            height: 600px;
+            width: 100%;
+        }
+    </style>
 </head>
-
 <body>
-  <table>
-    <tr>
-      <th>
-        <div id="curve_chart" style="width: 700px; height: 500px"></div>
-      </th>
-      <th>
-        <img src="https://www.astrogeo.va.it/data/webcam/current/ganna.jpg" alt="Ganna" width="500">
-      </th>
-    </tr>
-  </table>
-</body>
+    <h1>Select a point on the map to check for traffic</h1>
+    <div id="map"></div>
 
+    <!-- Include Leaflet JavaScript -->
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script>
+        // Initialize the map and set its view to the specified coordinates and zoom level
+        var map = L.map('map').setView([45.732420, 8.8130658], 12);
+
+        // Add a tile layer to the map (OpenStreetMap tiles)
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        // Define the points with their coordinates and URLs
+        var points = {{ points|tojson }};
+
+        // Add markers to the map with click event listeners
+        points.forEach(function(point) {
+            L.marker(point.coords).addTo(map)
+                .on('click', function() {
+                    window.location.href = point.url;
+                });
+        });
+    </script>
+</body>
 </html>
