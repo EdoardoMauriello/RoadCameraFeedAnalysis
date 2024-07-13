@@ -27,3 +27,13 @@ This project aims at training a model with the data obtained from the webcams an
 
 ## Usage
 The repository provides a container that can be run with docker.
+
+## How to run the app ##
+
+```
+docker build --tag python-docker .          # Build the image
+docker run -it python-docker /bin/bash      # Debug docker build issues
+docker run -d -p 8080:8080 python-docker    # Run the container
+docker ps                                   # Check if the container is running
+docker logs xxxxxxx                         # Logs in case of error
+```
