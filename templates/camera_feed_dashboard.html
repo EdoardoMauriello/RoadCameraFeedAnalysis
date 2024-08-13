@@ -1,40 +1,95 @@
 <html>
 
 <head>
+  <title>{{road}} {{loc_name}} {{direction}}</title>
   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
   <script type="text/javascript">
     google.charts.load('current', { 'packages': ['corechart'] });
     google.charts.setOnLoadCallback(drawChart);
-    var input_data = {{ data[0] | safe}};
+    var data = {{data|safe}}
+    var input_cars_up = {{ data[0] | safe }};
+    var input_cars_down = {{ data[1] | safe }};
+    var input_speed_up = {{ data[2] | safe }};
+    var input_speed_down = {{ data[3] | safe }};
+    
+    var direction_up = "{{direction}}";
+    var direction_down = '';
+    if(direction_up=='south'){
+      direction_down = 'north';
+    }else{
+      direction_down = 'south'
+    }
+
     function drawChart() {
-      var data = google.visualization.arrayToDataTable(input_data);
-      
+      var data_cars_up = google.visualization.arrayToDataTable(input_cars_up);
+      var data_cars_down = google.visualization.arrayToDataTable(input_cars_down);
+      var data_speed_up = google.visualization.arrayToDataTable(input_speed_up);
+      var data_speed_down = google.visualization.arrayToDataTable(input_speed_down);
+
       var options = {
-        title: 'Car traffic in {{loc_name}} {{direction}}',
+        title: '',
         curveType: 'function',
         legend: { position: 'bottom' }
       };
-      var chart = new google.visualization.ColumnChart(document.getElementById('curve_chart'));
-      chart.draw(data, options);
+
+      // Create and draw charts
+      var chart1 = new google.visualization.BarChart(document.getElementById('chart_1'));
+      chart1.draw(data_cars_up, {
+        title: 'Number of cars going ' + direction_up,
+        curveType: 'function',
+        legend: { position: 'bottom' }
+      });
+
+      var chart2 = new google.visualization.BarChart(document.getElementById('chart_2'));
+      chart2.draw(data_cars_down, {
+        title: 'Number of cars going ' + direction_down,
+        curveType: 'function',
+        legend: { position: 'bottom' }
+      });
+
+      var chart3 = new google.visualization.BarChart(document.getElementById('chart_3'));
+      chart3.draw(data_speed_up, {
+        title: 'Average speed of cars going ' + direction_up,
+        curveType: 'function',
+        legend: { position: 'bottom' }
+      });
+
+      var chart4 = new google.visualization.BarChart(document.getElementById('chart_4'));
+      chart4.draw(data_speed_down, {
+        title: 'Average speed of cars going ' + direction_down,
+        curveType: 'function',
+        legend: { position: 'bottom' }
+      });
     }
-    </script>
-    <link rel="icon" href="favicon.ico" type="image/x-icon">
+  </script>
+  <link rel="icon" href="{{url_for('static', filename='favicon.ico')}}" type="image/x-icon">
 </head>
 
 <body>
+  <h1>Car traffic in {{loc_name}} {{direction}}</h1>
   <table>
     <tr>
       <th>
-        <div id="curve_chart" style="width: 700px; height: 500px"></div>
+        <div id="chart_1" style="width: 350px; height: 250px"></div>
       </th>
       <th>
-        <video width="500" controls>
-          <source src="{{ camURL }}" type="video/mp4">
-          Your browser does not support the video tag.
-        </video>
+        <div id="chart_2" style="width: 350px; height: 250px"></div>
+      </th>
+    </tr>
+    <tr>
+      <th>
+        <div id="chart_3" style="width: 350px; height: 250px"></div>
+      </th>
+      <th>
+        <div id="chart_4" style="width: 350px; height: 250px"></div>
       </th>
     </tr>
   </table>
+  <h1>Live traffic</h1>
+  <video id="processed_video" width="500" controls autoplay>
+    <source src="{{filename}}" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
 </body>
 
 </html>

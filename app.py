@@ -2,10 +2,10 @@ from flask import Flask,render_template, request, url_for
 from os import getcwd
 import pandas as pd
 
-app = Flask(__name__, static_folder='videos')
+app = Flask(__name__, static_folder='static')
 data_path = 'data/'
 webcam_url_base = 'https://video.autostrade.it/video-mp4_hq'
-webcam_url_base = '/videos/'
+webcam_url_base = '/static/'
 df_cameras = pd.read_csv(data_path + 'cameras.csv')
 
 @app.route('/')
@@ -17,7 +17,8 @@ def home():
 def specific():
     cam_code = request.args.get('cam_code')
     data, loc_name, direction, lat, long = getStatistics(cam_code)
-    return render_template('test2.html', data = data, loc_name = loc_name, direction = direction, lat = lat, long = long, camURL = f'{webcam_url_base}p{cam_code[5:]}.mp4')
+    road = df_cameras[df_cameras['cam_code']==cam_code]['road'].iloc[0]
+    return render_template('camera_feed_dashboard.html', data = data, loc_name = loc_name, direction = direction, lat = lat, long = long, camURL = f'{webcam_url_base}p{cam_code[5:]}.mp4', road = road)
 
 def getMapPoints():
     df_active_cameras = df_cameras[df_cameras['active']==True]
@@ -26,7 +27,7 @@ def getMapPoints():
     for _, row in df_active_cameras.iterrows()]
     return points
 
-def getStatistics(cam_code): #TODO fix statistics passed for single charts
+def getStatistics(cam_code):
     camera = df_cameras[df_cameras['cam_code']==cam_code]
     df_data_cam = pd.read_csv(data_path + 'datacollection.csv')
     df_data_cam = df_data_cam[df_data_cam['cam_code']==cam_code]

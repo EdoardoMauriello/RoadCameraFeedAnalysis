@@ -1,2 +1,2 @@
 # must be ended with a new line "LF" (Unix) and not "CRLF" (Windows)
-*/10 * * * *  /usr/local/bin/python /python-docker/dataCollect.py >> /python-docker/cron.log
+*/10 * * * *  /usr/local/bin/python /python-docker/dataCollect_routine.py >> /python-docker/cron.log
