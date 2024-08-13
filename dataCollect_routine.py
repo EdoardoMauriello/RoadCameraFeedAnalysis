@@ -9,7 +9,7 @@ from datetime import datetime
 from ultralytics import YOLO
 import random
 
-def collect(codCam, saveprocessedvideo = True, savelog = False, showprocessedvideo = False, folder = 'videos'):
+def collect(codCam, saveprocessedvideo = True, savelog = False, showprocessedvideo = False, folder = 'static'):
     """
     Downloads the video and analyzes it with yolov8.
 
@@ -37,7 +37,7 @@ def collect(codCam, saveprocessedvideo = True, savelog = False, showprocessedvid
 
     # Create a video output
     if saveprocessedvideo:
-        fourcc = cv2.VideoWriter_fourcc(*'mp4v')
+        fourcc = cv2.VideoWriter_fourcc(*'h264')
         out = cv2.VideoWriter(processed_video_path, fourcc, fps, (width, height))
 
     y1 = 140
@@ -175,7 +175,7 @@ def collect(codCam, saveprocessedvideo = True, savelog = False, showprocessedvid
         #        os.remove(video_path)
     cv2.destroyAllWindows()
 
-def collectfake(codCam, saveprocessedvideo = True, savelog = False, showprocessedvideo = False, folder = 'videos'):
+def collectfake(codCam, saveprocessedvideo = True, savelog = False, showprocessedvideo = False, folder = 'static'):
     """
     Downloads the video and analyzes it with yolov8.
 
@@ -203,7 +203,7 @@ def collectfake(codCam, saveprocessedvideo = True, savelog = False, showprocesse
 
     # Create a video output
     if saveprocessedvideo:
-        fourcc = cv2.VideoWriter_fourcc(*'mp4v')
+        fourcc = cv2.VideoWriter_fourcc(*'h264')
         out = cv2.VideoWriter(processed_video_path, fourcc, fps, (width, height))
 
     y1 = 140
@@ -283,7 +283,7 @@ def collectfake(codCam, saveprocessedvideo = True, savelog = False, showprocesse
     cv2.destroyAllWindows()
 
 
-def downloadfromsource(cam_code, urlsource = 'https://video.autostrade.it/video-mp4_hq', destination = 'videos'):
+def downloadfromsource(cam_code, urlsource = 'https://video.autostrade.it/video-mp4_hq', destination = 'static'):
     if not os.path.exists(destination):
         os.makedirs(destination)
     response = requests.get(f'{urlsource}{cam_code}.mp4')
