@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <script type="text/javascript">
+    google.charts.load('current', { 'packages': ['corechart'] });
+    google.charts.setOnLoadCallback(drawCharts);
+
+    var input_data = {{ data | safe }};
+
+    function drawCharts() {
+      var charts = []; // Array to hold chart objects
+      var container = document.getElementById('chart_container');
+
+      // Create separate DataTables for each dataset
+      for (var i = 0; i < input_data.length; i++) {
+        var data = google.visualization.arrayToDataTable(input_data[i]);
+        charts.push(new google.visualization.ColumnChart(container.children[i]));
+        charts[i].draw(data, getChartOptions(i));
+      }
+    }
+
+    function getChartOptions(index) {
+      var options = {
+        title: '', // Set title dynamically based on data
+        curveType: 'function',
+        legend: { position: 'bottom' },
+        width: 300, // Adjust width for grid layout
+        height: 250, // Adjust height for visual balance
+      };
+
+      switch (index) {
+        case 0:
+          options.title = 'Cars Up';
+          break;
+        case 1:
+          options.title = 'Cars Down';
+          break;
+        case 2:
+          options.title = 'Average Speed Up';
+          break;
+        case 3:
+          options.title = 'Average Speed Down';
+          break;
+      }
+
+      return options;
+    }
+  </script>
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+</head>
+
+<body>
+  <div id="chart_container" style="display: grid; grid-template-columns: repeat(2, 1fr);">
+    </div>
+  <video width="500" controls>
+    <source src="{{ url_for('static', filename="filename") }}" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+</body>
+
+</html>

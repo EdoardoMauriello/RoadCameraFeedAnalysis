@@ -5,19 +5,20 @@
   <script type="text/javascript">
     google.charts.load('current', { 'packages': ['corechart'] });
     google.charts.setOnLoadCallback(drawChart);
-    var input_data = {{ data | safe}};
+    var input_data = {{ data[0] | safe}};
     function drawChart() {
       var data = google.visualization.arrayToDataTable(input_data);
-
+      
       var options = {
-        title: 'Car traffic in {{locName}} {{direction}}',
+        title: 'Car traffic in {{loc_name}} {{direction}}',
         curveType: 'function',
         legend: { position: 'bottom' }
       };
       var chart = new google.visualization.ColumnChart(document.getElementById('curve_chart'));
       chart.draw(data, options);
     }
-  </script>
+    </script>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
 </head>
 
 <body>
