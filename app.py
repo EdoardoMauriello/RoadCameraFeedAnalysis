@@ -5,8 +5,9 @@ import pandas as pd
 app = Flask(__name__, static_folder='static')
 data_path = 'data/'
 webcam_url_base = 'https://video.autostrade.it/video-mp4_hq'
-webcam_url_base = '/static/'
+webcam_url_base = 'static/'
 df_cameras = pd.read_csv(data_path + 'cameras.csv')
+extension = 'mp4'
 
 @app.route('/')
 def home():
@@ -18,7 +19,7 @@ def specific():
     cam_code = request.args.get('cam_code')
     data, loc_name, direction, lat, long = getStatistics(cam_code)
     road = df_cameras[df_cameras['cam_code']==cam_code]['road'].iloc[0]
-    return render_template('camera_feed_dashboard.html', data = data, loc_name = loc_name, direction = direction, lat = lat, long = long, camURL = f'{webcam_url_base}p{cam_code[5:]}.mp4', road = road)
+    return render_template('camera_feed_dashboard.html', data = data, loc_name = loc_name, direction = direction, lat = lat, long = long, camURL = f'{webcam_url_base}p{cam_code[5:]}.{extension}', road = road)
 
 def getMapPoints():
     df_active_cameras = df_cameras[df_cameras['active']==True]
