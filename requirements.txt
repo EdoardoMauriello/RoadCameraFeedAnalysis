@@ -3,3 +3,4 @@ matplotlib
 ultralytics
 numpy
 pandas
+ffmpeg-python

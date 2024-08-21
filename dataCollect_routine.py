@@ -8,6 +8,7 @@ import requests
 from datetime import datetime
 from ultralytics import YOLO
 import random
+import ffmpeg
 
 def collect(codCam, saveprocessedvideo = True, savelog = False, showprocessedvideo = False, folder = 'static'):
     """
@@ -315,12 +316,29 @@ def calculate_stats(trackhistory):
     avg_speed_down = sum_speed_down/count_down
     return (count_up, count_down, avg_speed_up, avg_speed_down)
 
+def converttoh264(codCam, folder='static'):
+    filename = f'{codCam[5:]}.mp4'
+    input_path = f'{folder}/p{filename}'
+    output_path = f'{folder}/c{filename}'
+    (
+        ffmpeg
+        .input(input_path)
+        .output(output_path, vcodec='libx264', preset='ultrafast', crf=17)
+        .run()
+    )
+
+
+
 df = pd.read_csv('data/cameras.csv')
+print('downloading files')
 for _,row in df.iterrows():
     if bool(row['active']):
         downloadfromsource(row['cam_code'])
+print('analyzing videos')
 for _,row in df.iterrows():
     if bool(row['active']):
         collectfake(row["cam_code"], saveprocessedvideo=True)
-
-
+print('converting files to correct codec')
+for _,row in df.iterrows():
+    if bool(row['active']):
+        converttoh264(row["cam_code"])

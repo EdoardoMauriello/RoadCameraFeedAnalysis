@@ -19,7 +19,7 @@ def specific():
     cam_code = request.args.get('cam_code')
     data, loc_name, direction, lat, long = getStatistics(cam_code)
     road = df_cameras[df_cameras['cam_code']==cam_code]['road'].iloc[0]
-    return render_template('camera_feed_dashboard.html', data = data, loc_name = loc_name, direction = direction, lat = lat, long = long, camURL = f'{webcam_url_base}p{cam_code[5:]}.{extension}', road = road)
+    return render_template('camera_feed_dashboard.html', data = data, loc_name = loc_name, direction = direction, lat = lat, long = long, camURL = f'{webcam_url_base}c{cam_code[5:]}.{extension}', road = road)
 
 def getMapPoints():
     df_active_cameras = df_cameras[df_cameras['active']==True]
