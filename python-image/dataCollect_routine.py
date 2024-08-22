@@ -38,7 +38,7 @@ def collect(codCam, saveprocessedvideo = True, savelog = False, showprocessedvid
 
     # Create a video output
     if saveprocessedvideo:
-        fourcc = cv2.VideoWriter_fourcc(*'h264')
+        fourcc = cv2.VideoWriter_fourcc(*'mp4v')
         out = cv2.VideoWriter(processed_video_path, fourcc, fps, (width, height))
 
     y1 = 140
@@ -204,7 +204,7 @@ def collectfake(codCam, saveprocessedvideo = True, savelog = False, showprocesse
 
     # Create a video output
     if saveprocessedvideo:
-        fourcc = cv2.VideoWriter_fourcc(*'h264')
+        fourcc = cv2.VideoWriter_fourcc(*'mp4v')
         out = cv2.VideoWriter(processed_video_path, fourcc, fps, (width, height))
 
     y1 = 140
@@ -324,7 +324,7 @@ def converttoh264(codCam, folder='static'):
         ffmpeg
         .input(input_path)
         .output(output_path, vcodec='libx264', preset='ultrafast', crf=17)
-        .run()
+        .run(overwrite_output=True, quiet=True)
     )
 
 
