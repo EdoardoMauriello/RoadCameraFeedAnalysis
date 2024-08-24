@@ -218,7 +218,7 @@ for _,row in df.iterrows():
 print('analyzing videos')
 for _,row in df.iterrows():
     if bool(row['active']):
-        collectfake(row["cam_code"], saveprocessedvideo=True)
+        collect(row["cam_code"], saveprocessedvideo=True)
 print('converting files to correct codec')
 for _,row in df.iterrows():
     if bool(row['active']):
