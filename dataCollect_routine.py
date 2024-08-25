@@ -209,6 +209,12 @@ def converttoh264(codCam, folder='static'):
         .output(output_path, vcodec='libx264', preset='ultrafast', crf=17)
         .run(overwrite_output=True, quiet=True)
     )
+def deletefiles(codCam, folder='static'):
+    filename = f'{codCam[5:]}.mp4'
+    p_filepath = f'{folder}/p{filename}'
+    og_filepath = f'{folder}/{filename}'
+    os.remove(p_filepath)
+    os.remove(og_filepath)
 
 df = pd.read_csv('data/cameras.csv')
 print('downloading files')
@@ -223,3 +229,7 @@ print('converting files to correct codec')
 for _,row in df.iterrows():
     if bool(row['active']):
         converttoh264(row["cam_code"])
+print('deleting files')
+for _,row in df.iterrows():
+    if bool(row['active']):
+        deletefiles(row["cam_code"])
