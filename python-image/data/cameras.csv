@@ -1,5 +1,0 @@
-active,lat,long,road,km,cam_code,loc_name,direction
-True,45.7502167,8.8071267,A08,39.4,/dt2/323f0c73-1c83-484d-a2c5-6a6750e5db7e-11,Castronno,north
-True,45.7324206,8.8102997,A08,37.3,/dt2/f525e7d5-27f6-4435-bee4-c2b67f29ca73-0,Solbiate,south
-False,45.7729044,8.8130658,A08,41.9,/dt2/549646d9-d7d8-42bb-8306-b2f5ea21484e-1,Gazzada,south
-False,45.7097178,8.8083158,A08,34.7,/dt2/1c33fe45-668b-4016-9a7f-9f8bde6c552c-22,Solbiate,north
